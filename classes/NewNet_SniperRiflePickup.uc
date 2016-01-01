@@ -3,5 +3,5 @@ class NewNet_SniperRiflePickup extends SniperRiflePickup;
 
 defaultproperties
 {
-     InventoryType=Class'UTCompv17asrc.NewNet_SniperRifle'
+     InventoryType=Class'UTCompv17b.NewNet_SniperRifle'
 }
