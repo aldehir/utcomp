@@ -555,7 +555,7 @@ function TeamGameScoreKill(Controller Killer, Controller Other)
 			//	+1 Point for killing an enemy targetting an important player on your team
 			//	+2 Points for killing an enemy important player
 
-			if ( CriticalPlayer(Other) )
+	        	/*if ( CriticalPlayer(Other) )
 			{
 				Killer.PlayerReplicationInfo.Score+= 2;
 				Killer.PlayerReplicationInfo.NetUpdateTime = Level.TimeSeconds - 1;
@@ -572,7 +572,7 @@ function TeamGameScoreKill(Controller Killer, Controller Other)
 					Killer.PlayerReplicationInfo.NetUpdateTime = Level.TimeSeconds - 1;
 					ScoreEvent(Killer.PlayerReplicationInfo,1,"team_protect_frag");
 				}
-			}
+			}*/
 
 		}
 		super(DeathMatch).ScoreKill(Killer, Other);
