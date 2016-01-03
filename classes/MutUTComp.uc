@@ -49,6 +49,17 @@ var config bool bEnableForwardVoting;
 var config bool bShieldFix;
 var config bool  bAllowRestartVoteEvenIfMapVotingIsTurnedOff;
 
+var config bool bEnableSuperShield;
+var config int MaxAssaultAmmo;
+var config int MaxAssaultGrenades;
+var config int MaxBioAmmo;
+var config int MaxShockAmmo;
+var config int MaxLinkAmmo;
+var config int MaxMiniAmmo;
+var config int MaxFlakAmmo;
+var config int MaxRocketAmmo;
+var config int MaxLightningAmmo;
+
 /* ----Known issues ----
    Mutant:  No Bskins/Forcemodel
    Invasion:  No Bskins/forcemodel on bots (but will on players), no warmup, no custom scoreboard
@@ -480,6 +491,16 @@ function SpawnReplicationClass()
     RepInfo.bEnableForwardVoting= bEnableForwardVoting;
     RepInfo.bShieldFix=bShieldFix;
     repinfo.bAllowRestartVoteEvenIfMapVotingIsTurnedOff = bAllowRestartVoteEvenIfMapVotingIsTurnedOff;
+    RepInfo.bEnableSuperShield = bEnableSuperShield;
+    RepInfo.MaxAssaultAmmo = MaxAssaultAmmo;
+    RepInfo.MaxAssaultGrenades = MaxAssaultGrenades;
+    RepInfo.MaxBioAmmo = MaxBioAmmo;
+    RepInfo.MaxShockAmmo = MaxShockAmmo;
+    RepInfo.MaxLinkAmmo = MaxLinkAmmo;
+    RepInfo.MaxMiniAmmo = MaxMiniAmmo;
+    RepInfo.MaxFlakAmmo = MaxFlakAmmo;
+    RepInfo.MaxRocketAmmo = MaxRocketAmmo;
+    RepInfo.MaxLightningAmmo = MaxLightningAmmo;
     for(i=0; i<VotingGametype.Length && i<ArrayCount(RepInfo.VotingNames); i++)
         RepInfo.VotingNames[i]=VotingGametype[i].GameTypeName;
 
@@ -525,9 +546,8 @@ function PostBeginPlay()
         if(string(M.Class)~="SpawnGrenades.MutSN")
             return;
     }
-    class'GrenadeAmmo'.default.InitialAmount = NumGrenadesOnSpawn;
 
-
+    InitializeWeapons();
 }
 
 simulated function bool InStrNonCaseSensitive(String S, string S2)
@@ -1035,8 +1055,7 @@ static function FillPlayInfo (PlayInfo PlayInfo)
     PlayInfo.AddSetting("UTComp Settings", "bEnableTeamOverlay", "Enable Team Overlay", 1, 1, "Check");
     PlayInfo.AddSetting("UTComp Settings", "bEnableEnhancedNetcode", "Enable Enhanced Netcode", 1, 1, "Check");
     PlayInfo.AddSetting("UTComp Settings", "bForward", "Enable the Forward gameplay modification.", 1, 1,"Check");
-    PlayInfo.AddSetting("UTComp Settings", "ServerMaxPlayers", "Voting Max Players",255, 1, "Text","2;0:32",,True,True);
-    PlayInfo.AddSetting("UTComp Settings", "NumGrenadesOnSpawn", "Number of grenades on spawn.",255, 1, "Text","2;0:32",,True,True);
+    PlayInfo.AddSetting("UTComp Settings", "ServerMaxPlayers", "Voting Max Players",1, 10, "Text","2;0:32",,True,True);
 
     PlayInfo.AddSetting("UTComp Settings", "bEnableVoting", "Enable Voting", 1, 1, "Check");
     PlayInfo.AddSetting("UTComp Settings", "bEnableBrightskinsVoting", "Allow players to vote on Brightskins settings.", 1, 1,"Check");
@@ -1047,6 +1066,17 @@ static function FillPlayInfo (PlayInfo PlayInfo)
     PlayInfo.AddSetting("UTComp Settings", "bEnableMapVoting", "Allow players to vote for map changes.", 1, 1,"Check");
     PlayInfo.AddSetting("UTComp Settings", "WarmupTime", "Warmup Time",1, 1, "Text","0;0:1800",,True,True);
 
+    PlayInfo.AddSetting("UTComp Settings", "bEnableSuperShield", "Use modified shield gun.", 1, 14, "Check");
+    PlayInfo.AddSetting("UTComp Settings", "NumGrenadesOnSpawn", "Number of grenades on spawn.",1, 15, "Text","2;0:32",,True,True);
+    PlayInfo.AddSetting("UTComp Settings", "MaxAssaultGrenades", "Max Assault Grenades", 1, 16, "Text", "3;0:999", , True);
+    PlayInfo.AddSetting("UTComp Settings", "MaxAssaultAmmo", "Max Assault Ammo", 1, 17, "Text", "3;0:999", , True);
+    PlayInfo.AddSetting("UTComp Settings", "MaxBioAmmo", "Max Bio Ammo", 1, 18, "Text", "3;0:999", , True);
+    PlayInfo.AddSetting("UTComp Settings", "MaxShockAmmo", "Max Shock Ammo", 1, 19, "Text", "3;0:999", , True);
+    PlayInfo.AddSetting("UTComp Settings", "MaxLinkAmmo", "Max Link Ammo", 1, 20, "Text", "3;0:999", , True);
+    PlayInfo.AddSetting("UTComp Settings", "MaxMiniAmmo", "Max Mini Ammo", 1, 21, "Text", "3;0:999", , True);
+    PlayInfo.AddSetting("UTComp Settings", "MaxFlakAmmo", "Max Flak Ammo", 1, 22, "Text", "3;0:999", , True);
+    PlayInfo.AddSetting("UTComp Settings", "MaxRocketAmmo", "Max Rocket Ammo", 1, 23, "Text", "3;0:999", , True);
+    PlayInfo.AddSetting("UTComp Settings", "MaxLightningAmmo", "Max Lightning Ammo", 1, 24, "Text", "3;0:999", , True);
 
     PlayInfo.PopClass();
     super.FillPlayInfo(PlayInfo);
@@ -1074,6 +1104,16 @@ static event string GetDescriptionText(string PropName)
         case "bEnableMapVoting": return "Check this to enable voting for Maps.";
         case "WarmupTime": return "Time for warmup. Set this to 0 for unlimited, otherwise it is the time in seconds.";
         case "bForward": return "Check this to enable the Forward gameplay modification.";
+        case "bEnableSuperShield": return "Use modified shield gun.";
+        case "MaxAssaultAmmo": return "Max Assault Ammo";
+        case "MaxAssaultGrenades": return "Max Assault Grenades";
+        case "MaxBioAmmo": return "Max Bio Ammo";
+        case "MaxShockAmmo": return "Max Shock Ammo";
+        case "MaxLinkAmmo": return "Max Link Ammo";
+        case "MaxMiniAmmo": return "Max Mini Ammo";
+        case "MaxFlakAmmo": return "Max Flak Ammo";
+        case "MaxRocketAmmo": return "Max Rocket Ammo";
+        case "MaxLightningAmmo": return "Max Lightning Ammo";
     }
 	return Super.GetDescriptionText(PropName);
 }
@@ -1150,6 +1190,30 @@ function bool AlwaysKeep (Actor Other)
 	return Super.AlwaysKeep(Other);
 }
 
+function InitializeWeapons()
+{
+    // Set up initial grenade ammo
+    class'xWeapons.GrenadeAmmo'.default.InitialAmount = NumGrenadesOnSpawn;
+
+    // Set up max ammo defaults
+    class'xWeapons.AssaultAmmo'.default.MaxAmmo = MaxAssaultAmmo;
+    class'xWeapons.GrenadeAmmo'.default.MaxAmmo = MaxAssaultGrenades;
+    class'xWeapons.BioAmmo'.default.MaxAmmo = MaxBioAmmo;
+    class'xWeapons.ShockAmmo'.default.MaxAmmo = MaxShockAmmo;
+    class'xWeapons.LinkAmmo'.default.MaxAmmo = MaxLinkAmmo;
+    class'xWeapons.FlakAmmo'.default.MaxAmmo = MaxFlakAmmo;
+    class'xWeapons.RocketAmmo'.default.MaxAmmo = MaxRocketAmmo;
+    class'xWeapons.MinigunAmmo'.default.MaxAmmo = MaxMiniAmmo;
+    class'xWeapons.SniperAmmo'.default.MaxAmmo = MaxLightningAmmo;
+    
+    // Enable super shield
+    if (bEnableSuperShield)
+    {
+        class'xWeapons.ShieldFire'.default.SelfForceScale = 1.5;
+        class'xWeapons.ShieldFire'.default.SelfDamageScale = 0.1;
+        class'xWeapons.ShieldFire'.default.MinSelfDamage = 0;
+    }
+}
 
 defaultproperties
 {
@@ -1283,4 +1347,15 @@ defaultproperties
      bShieldFix=true
 
      bAllowRestartVoteEvenIfMapVotingIsTurnedOff=false
+
+     bEnableSuperShield = true
+     MaxAssaultAmmo = 999;
+     MaxAssaultGrenades = 5;
+     MaxBioAmmo = 20;
+     MaxShockAmmo = 20;
+     MaxLinkAmmo = 100;
+     MaxMiniAmmo = 75;
+     MaxFlakAmmo = 12;
+     MaxRocketAmmo = 12;
+     MaxLightningAmmo = 10;
 }

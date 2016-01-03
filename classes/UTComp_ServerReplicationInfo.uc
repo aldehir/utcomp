@@ -40,6 +40,16 @@ var bool bEnableForwardVoting;
 var bool bShieldFix;
 var bool bAllowRestartVoteEvenIfMapVotingIsTurnedOff;
 
+var bool bEnableSuperShield;
+var int MaxAssaultAmmo;
+var int MaxAssaultGrenades;
+var int MaxBioAmmo;
+var int MaxShockAmmo;
+var int MaxLinkAmmo;
+var int MaxMiniAmmo;
+var int MaxFlakAmmo;
+var int MaxRocketAmmo;
+var int MaxLightningAmmo;
 
 replication
 {
@@ -52,7 +62,10 @@ replication
         benableDoubleDamage, ServerMaxPlayers, bEnableTimedOvertime,
         MaxPlayersClone, bEnableAdvancedVotingOptions, VotingOptions, LinePRI, bEnableTimedOvertimeVoting,
         bEnableEnhancedNetCodeVoting,bEnableEnhancedNetCode, bEnableWarmupVoting, bForward, bEnableForwardVoting,
-        bAllowRestartVoteEvenIfMapVotingIsTurnedOff;
+        bAllowRestartVoteEvenIfMapVotingIsTurnedOff,
+        bEnableSuperShield, MaxAssaultAmmo, MaxAssaultGrenades, MaxBioAmmo,
+        MaxShockAmmo, MaxLinkAmmo, MaxMiniAmmo, MaxFlakAmmo, MaxRocketAmmo,
+        MaxLightningAmmo;
 }
 
 defaultproperties
@@ -76,5 +89,16 @@ defaultproperties
      ServerMaxPlayers=10
      bEnableTimedOvertimeVoting=True
      bEnableTimedOvertime=False
+
+     bEnableSuperShield = true
+     MaxAssaultAmmo = 999;
+     MaxAssaultGrenades = 5;
+     MaxBioAmmo = 20;
+     MaxShockAmmo = 20;
+     MaxLinkAmmo = 100;
+     MaxMiniAmmo = 75;
+     MaxFlakAmmo = 12;
+     MaxRocketAmmo = 12;
+     MaxLightningAmmo = 10;
 }
 
