@@ -385,8 +385,8 @@ function DrawEnemyOverlay(UTComp_PRI uPRI, Canvas canvas)
     width = (18.0 * textWidth) + 10.0;
     
     // Determine intial position of the overlay
-    posX = canvas.ClipX * (1.0 - default.HorizPosition) - width - 5.0;
-    posY = canvas.ClipY * default.VertPosition - 5.0;
+    posX = canvas.ClipX * (1.0 - default.HorizPosition) - width;
+    posY = canvas.ClipY * default.VertPosition;
 
     for (i = 0; i < 8; i++)
     {
