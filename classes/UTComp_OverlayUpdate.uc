@@ -35,6 +35,9 @@ function ClearVariables()
             uPRI.OverlayInfo[i].Health=0;
             uPRI.OverlayInfo[i].Armor=0;
             uPRI.bHasDD[i]=0;
+
+            uPRI.EnemyOverlayInfo[i].PRI = None;
+            uPRI.EnemyOverlayInfo[i].Dead = 0;
        }
     }
     bVariablesCleared=True;
@@ -49,15 +52,24 @@ function UpdateVariables()
 
 function FindInfoForTeam(byte iTeam)
 {
-    local int i, j, k;
+    local int i, j, k, m;
     local Controller C;
     local UTComp_PRI uPRI;
+    local byte enemyTeam;
 
     local PlayerReplicationInfo PRI[iMAXPLAYERS];
     local byte Weapon[iMAXPLAYERS];
     local int Health[iMAXPLAYERS];
     local byte Armor[iMAXPLAYERS];
     local byte bHasDD[8];
+
+    local PlayerReplicationInfo EnemyPRI[iMAXPLAYERS];
+    local byte EnemyDead[iMAXPLAYERS];
+
+    if (iTeam == 0) enemyTeam = 1;
+    else enemyTeam = 0;
+
+    m = 0;
 
     for(C=Level.ControllerList; C!=None; C=C.NextController)
     {
@@ -68,11 +80,19 @@ function FindInfoForTeam(byte iTeam)
             if(UpdateVariablesFor(C, Weapon[j], Health[j], Armor[j], PRI[j], bHasDD[j]))
                j++;
         }
+        else if (C.GetTeamNum() == enemyTeam)
+        {
+            if (UpdateEnemyVariables(C, EnemyPRI[m], EnemyDead[m])) {
+                m++;
+            }
+        }
     }
+
     for(C=Level.ControllerList; C!=None; C=C.NextController)
     {
        if(iTeam!=255 && C.PlayerReplicationInfo!=None && PlayerController(C)!=None)
            uPRI=Class'UTComp_Util'.Static.GetUTCompPRI(C.PlayerReplicationInfo);
+
        if(uPRI!=None && (C.GetTeamNum() == iTeam || iTeam==uPRI.CoachTeam))
        {
            k=0;
@@ -88,6 +108,15 @@ function FindInfoForTeam(byte iTeam)
                    k++;
                }
            }
+
+           if (C.GetTeamNum() != uPRI.CoachTeam)
+           {
+               for (i = 0; i < iMAXPLAYERS; i++)
+               {
+                   uPRI.EnemyOverlayInfo[i].Dead = EnemyDead[i];
+                   uPRI.EnemyOverlayInfo[i].PRI = EnemyPRI[i];
+               }
+           }
        }
        else if(uPRI!=None && uPRI.CoachTeam==255 && C.PlayerReplicationInfo!=None && C.PlayerReplicationInfo.bOnlySpectator)
        {
@@ -98,6 +127,21 @@ function FindInfoForTeam(byte iTeam)
        }
        uPRI=None;
     }
+}
+
+function bool UpdateEnemyVariables(Controller C, out PlayerReplicationInfo PRI, out byte isDead)
+{
+    if (C.PlayerReplicationInfo == None) return false;
+    PRI = C.PlayerReplicationInfo;
+
+    // If the player has no pawn, then the player is dead
+    if (C.Pawn == None) {
+        isDead = 1;
+    } else {
+        isDead = 0;
+    }
+
+    return true;
 }
 
 function bool UpdateVariablesFor(Controller C, out byte Weapon, out int Health, out byte Armor, out PlayerReplicationInfo PRI, out byte IsDD)

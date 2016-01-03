@@ -63,10 +63,17 @@ struct TeamOverlayInfo
     var PlayerReplicationInfo PRI;
 };
 
+struct EnemyTeamOverlayInfo
+{
+    var byte Dead;
+    var PlayerReplicationInfo PRI;
+};
+
 var byte bHasDD[iMAXPLAYERS];
 
 
 var TeamOverlayInfo OverlayInfo[iMAXPLAYERS];
+var EnemyTeamOverlayInfo EnemyOverlayInfo[iMAXPLAYERS];
 
 var bool bMapListCompleted;
 
@@ -88,7 +95,7 @@ replication
     unreliable if(Role==Role_Authority && bNetOwner && bSendWepStats)
         NormalWepStatsPrim, NormalWepStatsAlt;
     unreliable if(Role==Role_Authority && bNetOwner)
-        OverlayInfo, VotedYes, VotedNo, bHasDD;
+        OverlayInfo, EnemyOverlayInfo, VotedYes, VotedNo, bHasDD;
     reliable if(Role<Role_Authority)
         Ready, NotReady, SetVoteMode, SetCoachTeam,
         CallVote, PassVote, SetColoredName, SetShowSelf, GetMapList, ReplyToMapSend;

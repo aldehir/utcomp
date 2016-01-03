@@ -170,6 +170,8 @@ function PostRender( canvas Canvas )
     drawArmor(uPRI, Canvas);
     drawIcons(uPRI, Canvas);
     DrawLocation(uPRI, Canvas);
+
+    DrawEnemyOverlay(uPRI, Canvas);
 }
 
 function bool GetNewNetEnabled()
@@ -365,6 +367,52 @@ function DrawLocation(utcomp_PRI uPRI, Canvas Canvas)
         Canvas.DrawTextClipped(uPRI.OverlayInfo[i].PRI.GetLocationName());
     }
     Canvas.ClipX=OldClipX;
+}
+
+function DrawEnemyOverlay(UTComp_PRI uPRI, Canvas canvas)
+{
+    local int i, numPlayers, rendered;
+    local float posX, posY;
+    local float width, height;
+
+    local float textWidth, textHeight;
+    local string enemyName;
+
+    // Determine width of the overlay
+    canvas.Font = LocationFont;
+    canvas.StrLen("X", textWidth, textHeight);
+
+    width = (18.0 * textWidth) + 10.0;
+    
+    // Determine intial position of the overlay
+    posX = canvas.ClipX * (1.0 - default.HorizPosition) - width - 5.0;
+    posY = canvas.ClipY * default.VertPosition - 5.0;
+
+    for (i = 0; i < 8; i++)
+    {
+        if (uPRI.EnemyOverlayInfo[i].PRI == None || uPRI.EnemyOverlayInfo[i].Dead == 1)
+            continue;
+
+        // Determine text and width of the player name
+        enemyName = uPRI.EnemyOverlayInfo[i].PRI.PlayerName;
+        canvas.StrLen(enemyName, textWidth, textHeight);
+
+        // Determine background height;
+        height = textHeight + 10.0;
+
+        // Render the background
+        canvas.Style = 5;
+        canvas.DrawColor = default.BGColor;
+        canvas.SetPos(posX, posY);
+        canvas.DrawTileStretched(material'Engine.WhiteTexture', width, height);
+
+        // Render the enemy name
+        canvas.DrawColor = default.InfoTextColor;
+        canvas.DrawTextJustified(enemyName, 2, posX + 5.0, posY + 5.0,
+                                 posX + width - 5.0, posY + height - 5.0);
+
+        posY += height + 3.0;
+    }
 }
 
 function GetFonts(Canvas Canvas)
