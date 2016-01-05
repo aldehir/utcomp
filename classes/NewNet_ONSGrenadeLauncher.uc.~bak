@@ -5,5 +5,5 @@ class NewNet_ONSGrenadeLauncher extends ONSGrenadeLauncher
 
 DefaultProperties
 {
-    PickupClass=Class'UTCompv17b.NewNet_ONSGrenadePickup'
+    PickupClass=Class'UTCompv17c.NewNet_ONSGrenadePickup'
 }

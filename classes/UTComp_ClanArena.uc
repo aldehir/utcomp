@@ -89,7 +89,7 @@ state MatchInProgress
        }
        else if(ElapsedTime < LockWeaponTime)
        {
-           BroadcastLocalizedMessage(class'Silent_TimerMessage', LockWeaponTime - ElapsedTime);
+           BroadcastLocalizedMessage(class'TimerMessage', LockWeaponTime - ElapsedTime);
            BroadcastLocalizedMessage(class'RoundMessage', ((Teams[0].Score+Teams[1].Score+1)<< 10) + (GoalScore*2-1));
        }
        if(bOvertime && !uWarmup.bInWarmup && !uWarmup.bWaitingOnRestart)
@@ -655,27 +655,27 @@ function AddGameSpecificInventory(Pawn p)
     local inventory inv;
     if(!class'MutUTComp'.default.bEnableEnhancedNetCode)
     {
-        p.CreateInventory("UTCompv17b.UTComp_ShieldGun");
-        p.CreateInventory("UTCompv17b.UTComp_AssaultRifle");
-        p.CreateInventory("UTCompv17b.UTComp_BioRifle");
-        p.CreateInventory("UTCompv17b.UTComp_MiniGun");
-        p.CreateInventory("UTCompv17b.UTComp_ShockRifle");
-        p.CreateInventory("UTCompv17b.UTComp_LinkGun");
-        p.CreateInventory("UTCompv17b.UTComp_FlakCannon");
-        p.CreateInventory("UTCompv17b.UTComp_RocketLauncher");
-        p.CreateInventory("UTCompv17b.UTComp_SniperRifle");
+        p.CreateInventory("UTCompv17c.UTComp_ShieldGun");
+        p.CreateInventory("UTCompv17c.UTComp_AssaultRifle");
+        p.CreateInventory("UTCompv17c.UTComp_BioRifle");
+        p.CreateInventory("UTCompv17c.UTComp_MiniGun");
+        p.CreateInventory("UTCompv17c.UTComp_ShockRifle");
+        p.CreateInventory("UTCompv17c.UTComp_LinkGun");
+        p.CreateInventory("UTCompv17c.UTComp_FlakCannon");
+        p.CreateInventory("UTCompv17c.UTComp_RocketLauncher");
+        p.CreateInventory("UTCompv17c.UTComp_SniperRifle");
    }
    else
    {
-        p.CreateInventory("UTCompv17b.UTComp_ShieldGun");
-        p.CreateInventory("UTCompv17b.NewNet_AssaultRifle");
-        p.CreateInventory("UTCompv17b.NewNet_BioRifle");
-        p.CreateInventory("UTCompv17b.NewNet_MiniGun");
-        p.CreateInventory("UTCompv17b.NewNet_ShockRifle");
-        p.CreateInventory("UTCompv17b.NewNet_LinkGun");
-        p.CreateInventory("UTCompv17b.NewNet_FlakCannon");
-        p.CreateInventory("UTCompv17b.NewNet_RocketLauncher");
-        p.CreateInventory("UTCompv17b.NewNet_SniperRifle");
+        p.CreateInventory("UTCompv17c.UTComp_ShieldGun");
+        p.CreateInventory("UTCompv17c.NewNet_AssaultRifle");
+        p.CreateInventory("UTCompv17c.NewNet_BioRifle");
+        p.CreateInventory("UTCompv17c.NewNet_MiniGun");
+        p.CreateInventory("UTCompv17c.NewNet_ShockRifle");
+        p.CreateInventory("UTCompv17c.NewNet_LinkGun");
+        p.CreateInventory("UTCompv17c.NewNet_FlakCannon");
+        p.CreateInventory("UTCompv17c.NewNet_RocketLauncher");
+        p.CreateInventory("UTCompv17c.NewNet_SniperRifle");
    }
    for(inv=p.Inventory; inv!=None; inv=inv.inventory)
    {
@@ -754,14 +754,14 @@ function bool AllowBecomeActivePlayer (PlayerController P)
 DefaultProperties
 {
      MaxLives=0
-     LockWeaponTime = 6.0
+     LockWeaponTime = 4.0
      TimeLimit = 2
      GoalScore=8
-     GameName="UTComp Clan Arena 1.7b"
+     GameName="UTComp Clan Arena 1.7c"
      bAllowWeaponThrowing=false
      bFirstSpawn=true
-     SecondaryMutatorClass="UTCompv17b.MutUTComp"
-     Round_Health = 150
+     SecondaryMutatorClass="UTCompv17c.MutUTComp"
+     Round_Health = 100
      Round_Armor = 100
      Description = "No Powerups, No Distractions, Full Weapon and armor Load! Kill the enemy team before they kill yours. Dead players are out until the round is over."
      FriendlyFireScale = 0.0

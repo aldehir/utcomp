@@ -7,6 +7,6 @@ CacheExempt;
 
 DefaultProperties
 {
-    FireModeClass[0] = Class'utcompv17b.Forward_UTComp_LinkAltFire'
-    FireModeClass[1] = Class'utcompv17b.Forward_UTComp_LinkFire'
+    FireModeClass[0] = Class'utcompv17c.Forward_UTComp_LinkAltFire'
+    FireModeClass[1] = Class'utcompv17c.Forward_UTComp_LinkFire'
 }

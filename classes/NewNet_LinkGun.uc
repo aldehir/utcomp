@@ -88,7 +88,7 @@ simulated function DispatchClientEffect(Vector V, rotator R)
 
 DefaultProperties
 {
-    FireModeClass(0)=class'UTCompv17b.NewNet_LinkAltFire'
-    FireModeClass(1)=class'UTCompv17b.NewNet_LinkFire'
-    PickupClass=Class'UTCompv17b.NewNet_LinkGunPickup'
+    FireModeClass(0)=class'UTCompv17c.NewNet_LinkAltFire'
+    FireModeClass(1)=class'UTCompv17c.NewNet_LinkFire'
+    PickupClass=Class'UTCompv17c.NewNet_LinkGunPickup'
 }
