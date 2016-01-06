@@ -10,7 +10,7 @@ var int lastscoredteam;
 var string SecondaryMutatorClass;
 
 const HEALTH_REMOVE = 2.0;
-const RESTART_WAIT_TIME = 8.0;
+const RESTART_WAIT_TIME = 5.0;
 
 var config int Round_Health;
 var config int Round_Armor;
